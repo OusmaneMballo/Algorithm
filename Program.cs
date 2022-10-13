@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace ConsoleApp1
@@ -67,16 +68,20 @@ namespace ConsoleApp1
 
             //var result = Degree(new int[] { 2, 3, 5, -7, 9, 21, -4 });
 
-            var result = foundSumPair(new int[] { 1, 2, 3, 6, 8, 1, 6 }, 5);
-            foreach (var val in result)
-            {
-                Console.WriteLine(val);
-            }
+            //var result = FoundSumPair(new int[] { 1, 2, 3, 6, 8, 1, 6 }, 5);
+            //foreach (var val in result)
+            //{
+            //    Console.WriteLine(val);
+            //}
+
+            //var result = HowManyPairs(10);
+            var result = Factoriel(3);
+            Console.WriteLine(result);
 
             Console.ReadKey();
         }
 
-        public static int[] foundSumPair(int[] array, int sum)
+        public static int[] FoundSumPair(int[] array, int sum)
         {
             int[] result = new int[2];
 
@@ -267,5 +272,66 @@ namespace ConsoleApp1
             return null;
         }
 
+        public static bool IsTwins(string a, string b)
+        {
+            if (a.Length != b.Length) return false;
+            var bSet = new HashSet<char>(b.ToLower());
+            var aSet = new HashSet<char>(a.ToLower());
+            return aSet.SetEquals(bSet);
+        }
+
+        public static string LocateUniversFormula()
+        {
+            var files = Directory.GetFiles("/tmp/documents", "universe-formula.*", SearchOption.AllDirectories);
+            if(files.Length > 0)
+            {
+                return files[0];
+            }
+            return null;
+        }
+
+        public static int HowManyPairs(int n)
+        {
+            var result = 0;
+
+            if(n >= 2 && n <= 10000)
+            {
+                for(var i = 1; i <= n; i++)
+                {
+                    if(i % 2 == 0)
+                    result++;
+                }
+            }
+
+            return result;
+        }
+        
+        public static int Factoriel(int n)
+        {
+            if(n == 1)
+            {
+                return 1;
+            }
+
+            return n * Factoriel(n-1);
+        }
+
+        public static string Solve(int width, int height, int length, int mass)
+        {
+            var volume = width * height * length;
+            var res = volume >= 1_000_000 || width >= 150 || length >= 150 || height >= 150;
+            var lourd = mass >= 20;
+
+            if (!res || !lourd)
+                return "STANDARD";
+
+            if (res && lourd)
+                return "REJECTED";
+
+            if (res || lourd)
+                return "SPECIAL";
+
+            return "REJECTED";
+        }
     }
 }
